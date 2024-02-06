@@ -12,27 +12,14 @@ import { handleEmail } from "../utils/helpers";
 const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 
 
-export const checkPhone = async (req, res, next) => {
-    const { phoneNumber } = req.params
-    try {
-
-        const user = await UserModel.findOne({ phoneNumber: phoneNumber })
-
-        if (!user) return next(new ErrorHandler("This phone number is not registered", 200))
-
-        return res.status(200).json({
-            success: true,
-            message: "Available",
-            userId: user._id
-        })
-    } catch (error) {
-        return next(error)
-    }
-}
 
 export const sendOtpToEmail = async (req, res, next) => {
 
     const { email } = req.body;
+
+    const user = await UserModel.findOne({ email: email.toLowerCase() })
+
+    if (!user) return next(new ErrorHandler("No user with this email", 200))
     // Generate token
     const otp = newOTP.generate(5, { alphabets: false, upperCase: false, specialChar: false });
 
@@ -59,7 +46,7 @@ export const sendOtpToEmail = async (req, res, next) => {
 
             await user.save({ validateBeforeSave: false });
 
-            await handleEmail(user,next,message)
+            await handleEmail(user, next, message,res)
 
         }
 
@@ -71,7 +58,7 @@ export const sendOtpToEmail = async (req, res, next) => {
         });
 
 
-        await handleEmail(savedUser,next,message)
+        await handleEmail(savedUser, next, message)
 
 
     } catch (error) {
@@ -109,7 +96,7 @@ export const registerUser = async (req, res, next) => {
     try {
         const { name, email, password, confirmPassword } = req.body
 
-        if (!name || !email || !password || !confirmPassword) return next(new ErrorHandler("All fields required", 400))
+        if (!name || !email || !password || !confirmPassword) return next(new ErrorHandler("Alls fields required", 400))
 
         if (password !== confirmPassword) return next(new ErrorHandler("Passwords do not match", 200))
 
@@ -126,8 +113,7 @@ export const registerUser = async (req, res, next) => {
             email: email.toLowerCase(),
             name,
             password,
-            cartItems:[],
-            wishItems:[],
+            authorizations: [],
         });
 
 
@@ -161,7 +147,7 @@ export const loginUser = async (req, res, next) => {
         const user = await UserModel.findOne({ email: email.toLowerCase() }).select("+password")
 
 
-        if (!user) return next(new ErrorHandler("Invalid Credentials", 200)) 
+        if (!user) return next(new ErrorHandler("Invalid Credentials", 200))
 
         const isMatch = await bcrypt.compare(password, user.password);
 
@@ -307,19 +293,19 @@ export const resetPassword = async (req, res, next) => {
     }
 }
 
-export const getLoggedInUser = async(req,res,next)=>{
-    const {_id} = req.user;
+export const getLoggedInUser = async (req, res, next) => {
+    const { _id } = req.user;
 
-    try {  
+    try {
         const user = await UserModel.findById(_id)
-        .populate("cartItems.product") 
-        .populate("wishItems.product")  
+            .populate("cartItems.product")
+            .populate("wishItems.product")
 
 
         return res.status(200).json({
             success: true,
-            user, 
-            
+            user,
+
         })
 
     } catch (error) {

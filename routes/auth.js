@@ -5,9 +5,7 @@ import { registerUser,saveNameAndUsername,loginUser,forgotPassword,verifyToken,r
 const router = express.Router()
 
 router.route('/register').post(registerUser);
-router.route('/login').post(loginUser);
- 
-router.route('/verify/mobile/:phoneNumber').get(checkPhone); 
+router.route('/login').post(loginUser); 
 
 router.route('/email/send').post(sendOtpToEmail);
 
