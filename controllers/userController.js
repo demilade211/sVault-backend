@@ -1,7 +1,4 @@
-import UserModel from "../models/user"
-import FollowersModel from "../models/followers"
-import ProfileModel from "../models/profile"
-import ReportedAccountModel from "../models/reportedAccounts"
+import UserModel from "../models/user" 
 import ErrorHandler from "../utils/errorHandler.js";
 import bcrypt from "bcryptjs";
 
@@ -9,28 +6,12 @@ export const getLoggedInUser = async(req,res,next)=>{
     const {_id} = req.user;
 
     try {  
-        const user = await UserModel.findById(_id);
-        const userFollowStats = await FollowersModel.findOne({user: _id})
-        const profile = await ProfileModel.findOne({user: _id})
-
-        let grossRevenue  
-
-        const totalTuales = profile.contributionList.reduce((sum, list) => sum + list.numberOfTuales, 0);
-
-        grossRevenue = profile.contributionList.length === 0 ? 0:totalTuales * 10
-
-        let paidSubscribers = userFollowStats.fans.length;
+        const user = await UserModel.findById(_id);    
 
 
         return res.status(200).json({
             success: true,
-            user,
-            userFollowStats,
-            bio:profile.bio,
-            hasAgreedToCreatorTerms:profile.hasAgreedToCreatorTerms,
-            grossRevenue,
-            paidSubscribers
-            
+            user,  
         })
 
     } catch (error) {

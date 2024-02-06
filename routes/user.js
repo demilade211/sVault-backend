@@ -4,16 +4,9 @@ import {agreeToCreatorTerms,getLoggedInUser,reportUser,blockUser,unblockUser,del
 
 const router = express.Router()
 
-router.route('/me').get(authenticateUser,getLoggedInUser);
+router.route('/me').get(authenticateUser,getLoggedInUser); 
 
-router.route('/report/:reportedUserId').post(authenticateUser,reportUser);
-
-router.route('/me/delete').post(authenticateUser,deleteMyAccount);
-router.route('/me/add-type').post(authenticateUser,setAccountType);
-router.route('/me/agree').post(authenticateUser,agreeToCreatorTerms);
-
-router.route('/block/:blockedUserId').post(authenticateUser,blockUser);
-router.route('/unblock/:blockedUserId').put(authenticateUser,unblockUser);
+router.route('/me/delete').post(authenticateUser,deleteMyAccount); 
 
 
 
