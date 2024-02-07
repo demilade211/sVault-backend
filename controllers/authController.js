@@ -1,6 +1,6 @@
 import UserModel from "../models/user"
 import otpModel from "../models/otps"
-import ErrorHandler from "../utils/errorHandler.js";
+import ErrorHandler from "../utils/errorHandler.js"; 
 import jwt from 'jsonwebtoken';
 import bcrypt from "bcryptjs";
 import crypto from "crypto"

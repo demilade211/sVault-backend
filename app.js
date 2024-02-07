@@ -5,6 +5,8 @@ import auth from "./routes/auth"
 import withdrawal from "./routes/withdrawal"
 import webhook from "./routes/webhook" 
 import user from "./routes/user"
+import payment from "./routes/payments"
+import atm from "./routes/atm"
 import cors from "cors"; 
 
 
@@ -21,6 +23,8 @@ app.use('/api/v1',auth);
 app.use('/api/v1/withdrawal',withdrawal);
 app.use('/api/v1/webhook',webhook);
 app.use('/api/v1',user); 
+app.use('/api/v1/payment',payment);
+app.use('/api/v1/atm',atm);
 
 
 //Middleware to handle errors

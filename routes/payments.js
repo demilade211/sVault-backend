@@ -4,9 +4,7 @@ import { initializePayment,verifyAndAddTualePoints,makeRecurringPayment,initiali
 
 const router = express.Router()
 
-router.route('/:amount').get(authenticateUser,initializePayment);
-router.route('/:amount/:creatorId').get(authenticateUser,initializeSubscription);
-router.route('/verify').put(authenticateUser,verifyAndAddTualePoints);
+router.route('/').post(authenticateUser,initializePayment); 
 router.route('/pay').post(authenticateUser,makeRecurringPayment); 
 
 

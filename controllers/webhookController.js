@@ -2,7 +2,7 @@ var crypto = require('crypto');
 var secret = process.env.SECRET_KEY;
 import WithdrawalModel from "../models/withdrawal"
 import UserModel from "../models/user"
-import PaymentModel from "../models/payment"
+import AtmModel from "../models/atm"
 import axios from "axios"
 import dotenv from "dotenv";
 
@@ -27,39 +27,12 @@ export const getWebhook = async (req, res, next) => {
 
             if (!event.data.plan.plan_code) {
                 const user = await UserModel.findOne({ email: event.data.customer.email })
+                const atm = await AtmModel.findOne({ user: user._id })
 
                 console.log(user);
 
-                switch (event.data.amount / 100) {
-                    case 1000:
-                        user.tcBalance = user.tcBalance + 100
-                        await user.save();
-                        break;
-                    case 3000:
-                        user.tcBalance = user.tcBalance + 300
-                        await user.save();
-                        break;
-                    case 10000:
-                        user.tcBalance = user.tcBalance + 1000
-                        await user.save();
-                        break;
-                    case 40000:
-                        user.tcBalance = user.tcBalance + 4000
-                        await user.save();
-                        break;
-                    default:
-                        user.tcBalance = user.tcBalance + 0
-                        await user.save();
-                        break;
-                }
-
-                const payment = {
-                    user: user._id,
-                    amount: event.data.amount,
-                    reference: event.data.reference
-                }
-
-                const newPayment = await PaymentModel.create(payment);
+                atm.isFunded = true
+                await atm.save();
 
                 const authorizationExists = user.authorizations.length > 0 && user.authorizations.filter(auth => auth.authorization.signature === event.data.authorization.signature).length > 0;
 
@@ -95,9 +68,9 @@ export const getWebhook = async (req, res, next) => {
 
             const withdrawal = await WithdrawalModel.findOneAndUpdate({ reference: event.data.reference }, { $set: profileFields }, { new: true })
             const user = await UserModel.findById(withdrawal.user)
+            const atm = await AtmModel.findOne({ user: user._id })
 
-            user.walletBalance = user.walletBalance + Number(event.data.amount) / 100
-            await user.save()
+            atm.balance = atm.balance + Number(event.data.amount) / 100;
         } catch (error) {
             console.log(error);
         }
@@ -110,9 +83,10 @@ export const getWebhook = async (req, res, next) => {
 
             const withdrawal = await WithdrawalModel.findOneAndUpdate({ reference: event.data.reference }, { $set: profileFields }, { new: true })
             const user = await UserModel.findById(withdrawal.user)
+            const atm = await AtmModel.findOne({ user: user._id })
 
-            user.walletBalance = user.walletBalance + Number(event.data.amount) / 100
-            await user.save()
+            atm.balance = atm.balance + Number(event.data.amount) / 100;
+            await atm.save()
         } catch (error) {
             console.log(error);
         }

@@ -15,7 +15,7 @@ const WithdrawalSchema = new Schema({
     },
     withdrawal_status:{
         type:String,
-        enum:['pending','successful','failed','failed'],
+        enum:['pending','successful','failed','wrong'],
         required:true,
     },
     reference:{
