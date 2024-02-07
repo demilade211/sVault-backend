@@ -11,6 +11,7 @@ let url = 'https://api.paystack.co';
 
 let secreteKey = process.env.NODE_ENV === "DEVELOPMENT" ? process.env.PAYSTACK_SECRETE_KEY_TEST : process.env.PAYSTACK_SECRETE_KEY_LIVE
 let subA = process.env.NODE_ENV === "DEVELOPMENT" ? "ACCT_1rfl6oo7whttogx" : "ACCT_ri4kdzrqk7eqar2"
+let splitCode = process.env.NODE_ENV === "DEVELOPMENT" ?"SPL_gnViGPfSqB":"SPL_tssvQHc6fQ"
 
 export const initializePayment = async (req, res, next) => {
 
@@ -33,8 +34,8 @@ export const initializePayment = async (req, res, next) => {
 
         const data = {
             amount: Number(amount) * 100,
-            email,
-            subaccount: subA
+            email, 
+            split_code:splitCode
         }
 
 
@@ -162,7 +163,8 @@ export const makeRecurringPayment = async (req, res, next) => {
         const info = {
             amount: Number(amount) * 100,
             email,
-            authorization_code
+            authorization_code,
+            split_code:splitCode
         }
 
         const paystackResponse = await axios.post(`${url}/transaction/charge_authorization`, info, config)
