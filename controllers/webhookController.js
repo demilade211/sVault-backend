@@ -27,9 +27,9 @@ export const getWebhook = async (req, res, next) => {
 
             if (!event.data.plan.plan_code) {
                 const user = await UserModel.findOne({ email: event.data.customer.email })
-                const atm = await AtmModel.findOne({ user: user._id })
+                const atm = await AtmModel.findOne({ reference: event.data.reference }) 
 
-                console.log(user);
+                console.log(atm);
 
                 atm.isFunded = true
                 await atm.save();
@@ -67,8 +67,7 @@ export const getWebhook = async (req, res, next) => {
             };
 
             const withdrawal = await WithdrawalModel.findOneAndUpdate({ reference: event.data.reference }, { $set: profileFields }, { new: true })
-            const user = await UserModel.findById(withdrawal.user)
-            const atm = await AtmModel.findOne({ user: user._id })
+            const atm = await AtmModel.findOne({ reference: withdrawal.atmReference })
 
             atm.balance = atm.balance + Number(event.data.amount) / 100;
         } catch (error) {
@@ -82,8 +81,7 @@ export const getWebhook = async (req, res, next) => {
             };
 
             const withdrawal = await WithdrawalModel.findOneAndUpdate({ reference: event.data.reference }, { $set: profileFields }, { new: true })
-            const user = await UserModel.findById(withdrawal.user)
-            const atm = await AtmModel.findOne({ user: user._id })
+            const atm = await AtmModel.findOne({ reference: withdrawal.atmReference })
 
             atm.balance = atm.balance + Number(event.data.amount) / 100;
             await atm.save()

@@ -141,7 +141,8 @@ export const makeWithdrawal = async (req, res, next) => {
                 user: _id,
                 amount,
                 withdrawal_status: "wrong",
-                reference: "noreference"
+                reference: "noreference",
+                atmReference:"noatmreference"
             }
 
             const newWithdrawal = await WithdrawalModel.create(withdrawal);
@@ -161,7 +162,8 @@ export const makeWithdrawal = async (req, res, next) => {
             user: _id,
             amount,
             withdrawal_status: "pending",
-            reference: paystackResponse.data.data.reference
+            reference: paystackResponse.data.data.reference,
+            atmReference:atm.reference
         }
 
         const newWithdrawal = await WithdrawalModel.create(withdrawal);

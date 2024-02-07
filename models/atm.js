@@ -37,6 +37,9 @@ const AtmSchema = new Schema({
         type:Boolean,
         required: true,
         default: false
+    },
+    referedBy:{
+        type:String,
     }
 },
 {timestamps: true}

@@ -145,7 +145,7 @@ export const initializePayment = async (req, res, next) => {
 
 export const makeRecurringPayment = async (req, res, next) => {
     const { _id } = req.user;
-    const { amount, email, authorization_code,balance,beneficiaryName,pin,customMessage } = req.body
+    const { amount, email, authorization_code,beneficiaryName,pin,customMessage } = req.body
 
     const config = {
         headers: {
@@ -166,12 +166,12 @@ export const makeRecurringPayment = async (req, res, next) => {
         }
 
         const paystackResponse = await axios.post(`${url}/transaction/charge_authorization`, info, config)
-
+        const { reference } = paystackResponse.data.data
         const newAtm = {
             user: user._id,
             amount: Number(amount),
             reference:reference,
-            balance,
+            balance:Number(amount),
             beneficiaryName,
             pin,
             customMessage

@@ -22,6 +22,10 @@ const WithdrawalSchema = new Schema({
         type:String,
         required: true
     },
+    atmReference:{
+        type:String,
+        required: true
+    }
 })
 
 module.exports = mongoose.model("Withdrawal", WithdrawalSchema)
