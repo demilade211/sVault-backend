@@ -116,15 +116,19 @@ export const makeWithdrawal = async (req, res, next) => {
 
     const { _id } = req.user;
     const { amount, recipient_code } = req.body
+    const { atmId } = req.params
     let convertedAmount = Number(amount)
     let withdrawalAmount = 0
 
     try {
 
         const user = await UserModel.findById(_id)
-        const atm = await AtmModel.findOne({ user: user._id }) 
-        console.log(user);
+        const atm = await AtmModel.findOne({ _id: atmId }) 
+        
 
+        if (!atm) return next(new ErrorHandler("Atm not found", 200))
+
+        if(!atm.isFunded)return next(new ErrorHandler("No funds in Atm", 200))
 
         if (convertedAmount <= 5000) withdrawalAmount = convertedAmount + 10
 
@@ -132,11 +136,12 @@ export const makeWithdrawal = async (req, res, next) => {
 
         if (convertedAmount > 50000) withdrawalAmount = convertedAmount + 50
 
-        if (withdrawalAmount > user.walletBalance) {
+        if (withdrawalAmount > atm.balance) {
             const withdrawal = {
                 user: _id,
                 amount,
                 withdrawal_status: "wrong",
+                reference: "noreference"
             }
 
             const newWithdrawal = await WithdrawalModel.create(withdrawal);
@@ -148,8 +153,9 @@ export const makeWithdrawal = async (req, res, next) => {
             amount: Number(amount) * 100,
             recipient: recipient_code
         }
+ 
 
-        const paystackResponse = await axios.post(`${url}/transfer`, details, config)
+        const paystackResponse = await axios.post(`${url}/transfer`, details, config) 
 
         const withdrawal = {
             user: _id,

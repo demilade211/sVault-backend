@@ -11,7 +11,7 @@ router.route('/account').get(authenticateUser,getWithdrawalAccount);
 
 router.route('/list/bank').get(authenticateUser,getBankList);
 
-router.route('/withdraw')
+router.route('/withdraw/:atmId')
     .post(authenticateUser,makeWithdrawal)
     .get(authenticateUser,getWithdrawalHistory);
 

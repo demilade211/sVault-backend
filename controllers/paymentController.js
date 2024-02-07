@@ -10,7 +10,7 @@ dotenv.config({ path: "config/config.env" });
 let url = 'https://api.paystack.co';
 
 let secreteKey = process.env.NODE_ENV === "DEVELOPMENT" ? process.env.PAYSTACK_SECRETE_KEY_TEST : process.env.PAYSTACK_SECRETE_KEY_LIVE
-let subA = process.env.NODE_ENV === "DEVELOPMENT" ? "ACCT_13voiifash0p8db" : "ACCT_dfdnc71tbdqayoq"
+let subA = process.env.NODE_ENV === "DEVELOPMENT" ? "ACCT_1rfl6oo7whttogx" : "ACCT_ri4kdzrqk7eqar2"
 
 export const initializePayment = async (req, res, next) => {
 
