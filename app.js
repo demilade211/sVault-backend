@@ -9,11 +9,15 @@ import payment from "./routes/payments"
 import atm from "./routes/atm"
 import cors from "cors"; 
 
-
+const corsOptions ={
+    origin:'http://localhost:3000', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200
+}
 
 const app = express();
 
-app.use(cors());
+app.use(cors(corsOptions));
 //app.use(morgan('dev'))
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));//to handle url encoded data 
