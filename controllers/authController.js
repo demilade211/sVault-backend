@@ -18,8 +18,7 @@ export const sendOtpToEmail = async (req, res, next) => {
     const { email } = req.body;
 
     const user = await UserModel.findOne({ email: email.toLowerCase() })
-
-    if (!user) return next(new ErrorHandler("No user with this email", 200))
+ 
     // Generate token
     const otp = newOTP.generate(5, { alphabets: false, upperCase: false, specialChar: false });
 
