@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.route('/').get(authenticateUser,getAtm); 
 router.route('/:atmId').get(authenticateUser,getAtmById); 
-router.route('/check/:atmId').post(authenticateUser,checkPin); 
+router.route('/check/:atmId').post(checkPin); 
 
 
 export default router;
