@@ -134,6 +134,7 @@ export const makeWithdrawal = async (req, res, next) => {
         if (withdrawalAmount > atm.balance) {
             const withdrawal = { 
                 user:atm.user,
+                atmId:atm._id,
                 amount,
                 withdrawal_status: "wrong",
                 reference: "noreference",
@@ -155,6 +156,7 @@ export const makeWithdrawal = async (req, res, next) => {
 
         const withdrawal = { 
             user:atm.user,
+            atmId:atm._id,
             amount,
             withdrawal_status: "pending",
             reference: paystackResponse.data.data.reference,
@@ -179,10 +181,11 @@ export const makeWithdrawal = async (req, res, next) => {
 export const getWithdrawalHistory = async (req, res, next) => {
 
     const { id } = req.user;
+    const { atmId } = req.params;
 
     try {
 
-        const history = await WithdrawalModel.find({ user: id })
+        const history = await WithdrawalModel.find({ user: id,atmId })
 
         return res.status(200).json({
             success: true,

@@ -9,6 +9,11 @@ const WithdrawalSchema = new Schema({
         ref: "User",
         required: true,
     },
+    atmId:{
+        type: Schema.Types.ObjectId,//gets the  _id from user model
+        ref: "Atm",
+        required: true,
+    },
     amount:{
         type: Number,
         required:true
