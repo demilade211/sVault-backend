@@ -133,6 +133,7 @@ export const makeWithdrawal = async (req, res, next) => {
 
         if (withdrawalAmount > atm.balance) {
             const withdrawal = { 
+                user:atm.user,
                 amount,
                 withdrawal_status: "wrong",
                 reference: "noreference",
@@ -153,6 +154,7 @@ export const makeWithdrawal = async (req, res, next) => {
         const paystackResponse = await axios.post(`${url}/transfer`, details, config) 
 
         const withdrawal = { 
+            user:atm.user,
             amount,
             withdrawal_status: "pending",
             reference: paystackResponse.data.data.reference,

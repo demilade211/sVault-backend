@@ -4,6 +4,11 @@ const Schema = mongoose.Schema;
 
 
 const WithdrawalSchema = new Schema({ 
+    user:{
+        type: Schema.Types.ObjectId,//gets the  _id from user model
+        ref: "User",
+        required: true,
+    },
     amount:{
         type: Number,
         required:true
