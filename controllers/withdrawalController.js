@@ -110,16 +110,14 @@ export const getWithdrawalAccount = async (req, res, next) => {
 // }
 
 export const makeWithdrawal = async (req, res, next) => {
-
-    const { _id } = req.user;
+ 
     const { amount, recipient_code } = req.body
     const { atmId } = req.params
     let convertedAmount = Number(amount)
     let withdrawalAmount = 0
 
-    try {
-
-        const user = await UserModel.findById(_id)
+    try { 
+        
         const atm = await AtmModel.findOne({ _id: atmId }) 
         
 
