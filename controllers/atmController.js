@@ -79,6 +79,7 @@ export const getNameAndMessage = async (req, res, next) => {
             success: true,
             name:atm.beneficiaryName,
             customMessage:atm.customMessage,
+            createAt:atm.createAt
         })
 
     } catch (error) {
