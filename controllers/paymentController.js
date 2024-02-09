@@ -35,7 +35,8 @@ export const initializePayment = async (req, res, next) => {
         const data = {
             amount: Number(amount) * 100,
             email, 
-            split_code:splitCode
+            split_code:splitCode,
+            callback_url:`https://www.suprisevault.online/home`
         }
 
 
