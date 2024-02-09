@@ -152,8 +152,7 @@ export const makeWithdrawal = async (req, res, next) => {
 
         const paystackResponse = await axios.post(`${url}/transfer`, details, config) 
 
-        const withdrawal = {
-            user: _id,
+        const withdrawal = { 
             amount,
             withdrawal_status: "pending",
             reference: paystackResponse.data.data.reference,
