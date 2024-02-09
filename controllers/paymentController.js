@@ -18,7 +18,7 @@ export const initializePayment = async (req, res, next) => {
     // const paystack = new PayStack(process.env.PAYSTACK_SECRETE_KEY_TEST, process.env.NODE_ENV)
 
     const { email } = req.user;
-    const { amount,beneficiaryName,pin,customMessage } = req.body;
+    const { amount,beneficiaryName,pin,customMessage,referedBy } = req.body;
 
     try {
 
@@ -51,7 +51,8 @@ export const initializePayment = async (req, res, next) => {
             balance:Number(amount),
             beneficiaryName,
             pin,
-            customMessage
+            customMessage,
+            referedBy
         }
 
         const newPayment = await AtmModel.create(newAtm);
@@ -146,7 +147,7 @@ export const initializePayment = async (req, res, next) => {
 
 export const makeRecurringPayment = async (req, res, next) => {
     const { _id } = req.user;
-    const { amount, email, authorization_code,beneficiaryName,pin,customMessage } = req.body
+    const { amount, email, authorization_code,beneficiaryName,pin,customMessage ,referedBy} = req.body
 
     const config = {
         headers: {
@@ -176,7 +177,8 @@ export const makeRecurringPayment = async (req, res, next) => {
             balance:Number(amount),
             beneficiaryName,
             pin,
-            customMessage
+            customMessage,
+            referedBy
         }
 
         const newPayment = await AtmModel.create(newAtm);

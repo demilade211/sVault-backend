@@ -4,15 +4,15 @@ import {createWithdrawalAccount,getBankList,validateAccountNumber,getWithdrawalA
 
 const router = express.Router()
 
-router.route('/account').post(authenticateUser,createWithdrawalAccount);
+router.route('/account').post(createWithdrawalAccount);
 router.route('/account').get(authenticateUser,getWithdrawalAccount);
 
 // router.route('/validate/account').post(authenticateUser,validateAccountNumber);
 
-router.route('/list/bank').get(authenticateUser,getBankList);
+router.route('/list/bank').get(getBankList);
 
 router.route('/withdraw/:atmId')
-    .post(authenticateUser,makeWithdrawal)
+    .post(makeWithdrawal)
     .get(authenticateUser,getWithdrawalHistory);
 
 

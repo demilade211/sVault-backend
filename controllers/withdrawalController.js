@@ -21,7 +21,7 @@ const config = {
 
 export const createWithdrawalAccount = async (req, res, next) => {
     const { _id } = req.user;
-    const { name, accountNumber, bankCode } = req.body
+    const { accountNumber, bankCode } = req.body
 
     try {
 
