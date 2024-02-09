@@ -1,6 +1,6 @@
 import UserModel from "../models/user"
 import otpModel from "../models/otps"
-import ErrorHandler from "../utils/errorHandler.js"; 
+import ErrorHandler from "../utils/errorHandler.js";
 import jwt from 'jsonwebtoken';
 import bcrypt from "bcryptjs";
 import crypto from "crypto"
@@ -18,7 +18,7 @@ export const sendOtpToEmail = async (req, res, next) => {
     const { email } = req.body;
 
     const user = await UserModel.findOne({ email: email.toLowerCase() })
- 
+
     // Generate token
     const otp = newOTP.generate(5, { alphabets: false, upperCase: false, specialChar: false });
 
@@ -45,7 +45,7 @@ export const sendOtpToEmail = async (req, res, next) => {
 
             await user.save({ validateBeforeSave: false });
 
-            await handleEmail(user, next, message,res)
+            await handleEmail(user, next, message, res)
 
         }
 
@@ -57,7 +57,26 @@ export const sendOtpToEmail = async (req, res, next) => {
         });
 
 
-        await handleEmail(savedUser, next, message)
+        //await handleEmail(savedUser, next, message)
+        try {
+            await sendEmail({
+                email: user.email,
+                subject: "Suprise Vault OTP",
+                message
+            })
+
+            return res.status(200).json({
+                success: true,
+                message: `Email sent to ${user.email}`
+            })
+
+        } catch (error) {
+            user.otp = undefined;
+            user.expiretoken = undefined;
+
+            await user.save({ validateBeforeSave: false })
+            return next(new ErrorHandler(error.message, 500))
+        }
 
 
     } catch (error) {
