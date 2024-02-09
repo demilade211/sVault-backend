@@ -66,3 +66,22 @@ export const checkPin = async (req, res, next) => {
         return next(error)
     }
 }
+
+export const getNameAndMessage = async (req, res, next) => {
+    const { atmId } = req.params; 
+    try {
+        const atm = await AtmModel.findById(atmId).populate('user') 
+
+        if (!atm) return next(new ErrorHandler("Atm not found", 404))
+     
+
+        return res.status(200).json({
+            success: true,
+            name:atm.beneficiaryName,
+            customMessage:atm.customMessage,
+        })
+
+    } catch (error) {
+        return next(error)
+    }
+}
