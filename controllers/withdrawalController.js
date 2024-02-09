@@ -19,13 +19,10 @@ const config = {
     }
 }
 
-export const createWithdrawalAccount = async (req, res, next) => {
-    const { _id } = req.user;
+export const createWithdrawalAccount = async (req, res, next) => { 
     const { accountNumber, bankCode } = req.body
 
-    try {
-
-        const user = await UserModel.findById(_id)
+    try { 
 
         const paystackRes = await axios.get(`${url}/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`, config)
 
