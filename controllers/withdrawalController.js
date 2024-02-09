@@ -117,7 +117,7 @@ export const makeWithdrawal = async (req, res, next) => {
     let withdrawalAmount = 0
 
     try { 
-        
+
         const atm = await AtmModel.findOne({ _id: atmId }) 
         
 
@@ -132,8 +132,7 @@ export const makeWithdrawal = async (req, res, next) => {
         if (convertedAmount > 50000) withdrawalAmount = convertedAmount + 50
 
         if (withdrawalAmount > atm.balance) {
-            const withdrawal = {
-                user: _id,
+            const withdrawal = { 
                 amount,
                 withdrawal_status: "wrong",
                 reference: "noreference",
