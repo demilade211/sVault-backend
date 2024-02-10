@@ -49,23 +49,30 @@ export const getAtmById = async (req, res, next) => {
 
 export const checkPin = async (req, res, next) => {
     const { atmId } = req.params;
-    const { pin } = req.body;
+    let { pin } = req.body; // Extract PIN from request body
     try {
-        const atm = await AtmModel.findById(atmId).populate('user') 
+        const atm = await AtmModel.findById(atmId).populate('user');
 
-        if (!atm) return next(new ErrorHandler("Atm not found", 404))
+        if (!atm) return next(new ErrorHandler("ATM not found", 404));
 
-        if (Number(pin) !== atm.pin) return next(new ErrorHandler("Pin Incorrect", 200))
+        // Remove leading zero from PIN if present
+        pin = pin.replace(/^0+/, '');
+
+        // Compare PINs (converted to numbers) after removing leading zeros
+        if (Number(pin) !== atm.pin) {
+            return next(new ErrorHandler("Incorrect PIN", 200));
+        }
 
         return res.status(200).json({
             success: true,
-            message:"Correct pin"
-        })
+            message: "Correct PIN"
+        });
 
     } catch (error) {
-        return next(error)
+        return next(error);
     }
 }
+
 
 export const getNameAndMessage = async (req, res, next) => {
     const { atmId } = req.params; 
