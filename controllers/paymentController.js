@@ -37,7 +37,7 @@ export const initializePayment = async (req, res, next) => {
             email, 
             split_code:splitCode,
             callback_url:`https://www.suprisevault.online/home`,
-            channels:["card"]
+            //channels:["card"]
         }
 
 
@@ -48,9 +48,9 @@ export const initializePayment = async (req, res, next) => {
 
         const newAtm = {
             user: user._id,
-            amount: Number(amount)-1000,
+            amount: Number(amount)-500,
             reference:reference,
-            balance:Number(amount)-1000,
+            balance:Number(amount)-500,
             beneficiaryName,
             pin,
             customMessage,
@@ -174,9 +174,9 @@ export const makeRecurringPayment = async (req, res, next) => {
         const { reference } = paystackResponse.data.data
         const newAtm = {
             user: user._id,
-            amount: Number(amount)-1000,
+            amount: Number(amount)-500,
             reference:reference,
-            balance:Number(amount)-1000,
+            balance:Number(amount)-500,
             beneficiaryName,
             pin,
             customMessage,
