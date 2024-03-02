@@ -1,5 +1,5 @@
 import UserModel from "../models/user"
-import otpModel from "../models/otps"
+import otpModel from "../models/otps" 
 import ErrorHandler from "../utils/errorHandler.js";
 import jwt from 'jsonwebtoken';
 import bcrypt from "bcryptjs";
@@ -310,24 +310,5 @@ export const resetPassword = async (req, res, next) => {
         return next(error)
     }
 }
-
-export const getLoggedInUser = async (req, res, next) => {
-    const { _id } = req.user;
-
-    try {
-        const user = await UserModel.findById(_id)
-            .populate("cartItems.product")
-            .populate("wishItems.product")
-
-
-        return res.status(200).json({
-            success: true,
-            user,
-
-        })
-
-    } catch (error) {
-        return next(error)
-    }
-}
+ 
 

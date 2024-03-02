@@ -24,7 +24,7 @@ const PORT = process.env.PORT || 8000;
 
 
 const server = app.listen(PORT, () => {
-    console.log(`Tuale server connected on Port: http://localhost:${PORT} in ${process.env.NODE_ENV} MODE`);
+    console.log(`Svault server connected on Port: http://localhost:${PORT} in ${process.env.NODE_ENV} MODE`);
 });
 
 //Handle unhandled promise rejections

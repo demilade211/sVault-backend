@@ -1,5 +1,6 @@
 import UserModel from "../models/user" 
 import ErrorHandler from "../utils/errorHandler.js";
+import AtmModel from "../models/atm.js"
 import bcrypt from "bcryptjs";
 
 export const getLoggedInUser = async(req,res,next)=>{
@@ -7,11 +8,23 @@ export const getLoggedInUser = async(req,res,next)=>{
 
     try {  
         const user = await UserModel.findById(_id);    
+        const fundedAtms = await AtmModel.find({ isFunded: true })
+        const attemptedAtms = await AtmModel.find({ isFunded: false })
+        const UserCount = await UserModel.countDocuments()
+
+        let admin = {}
+
+        if (user.role === "admin") {
+            admin.userCount = UserCount
+            admin.fundedAtmsCount=fundedAtms.length
+            admin.attemptedAtmsCount=attemptedAtms.length
+        }
 
 
         return res.status(200).json({
             success: true,
             user,  
+            admin
         })
 
     } catch (error) {

@@ -30,7 +30,7 @@ export const initializePayment = async (req, res, next) => {
             }
         }
 
-        if (Number(amount) < 2000) return next(new ErrorHandler("Please Minimum amount is 2000", 200))
+        if (Number(amount) < 1500) return next(new ErrorHandler("Please Minimum amount is 1500", 200))
 
         const data = {
             amount: Number(amount) * 100,
