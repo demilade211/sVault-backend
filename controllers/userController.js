@@ -8,10 +8,10 @@ export const getLoggedInUser = async(req,res,next)=>{
 
     try {  
         const user = await UserModel.findById(_id);   
-        const users = await UserModel.find().limit(4);   
+        const users = await UserModel.find().sort({ createdAt: -1 }).limit(4);   
         const fundedAtms = await AtmModel.find({ isFunded: true })
         const attemptedAtms = await AtmModel.find({ isFunded: false })
-        const atms = await AtmModel.find().limit(4)
+        const atms = await AtmModel.find().sort({ createdAt: -1 }).limit(4)
         const UserCount = await UserModel.countDocuments()
 
         let admin = {}
