@@ -29,7 +29,7 @@ const sendEmail = async (options) => {
 
 
 
-  const TOKEN = "e11974ddce280b7d7a4b3d7c42e939d8";
+  const TOKEN = "feb4159c3c7965ca0f10b5906e60ef8d";
   const ENDPOINT = "https://send.api.mailtrap.io/";
 
   const client = new MailtrapClient({ endpoint: ENDPOINT, token: TOKEN });
