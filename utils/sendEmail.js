@@ -34,7 +34,7 @@ const sendEmail = async (options) => {
 
   const client = new MailtrapClient({ endpoint: ENDPOINT, token: TOKEN });
 
-  const sender = {   email: "noreply@tuale.app" };
+  const sender = {   email: "noreply@suprisevault.online" };
 
   await client.send({
     from: sender,
